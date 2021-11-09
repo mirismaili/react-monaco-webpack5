@@ -8,12 +8,16 @@ import React, {useLayoutEffect, useState} from 'react'
 // import useScript from './useScript'
 
 window.MonacoEnvironment = {
-	getWorkerUrl (moduleId, label) {
+	getWorker(moduleId, label) {
 		console.log({label})
-		if (label === 'yaml') {
-			return '/static/js/yaml.worker.chunk.js'
+		switch (label) {
+		case 'editorWorkerService':
+			return new Worker(new URL('monaco-editor/esm/vs/editor/editor.worker', import.meta.url))
+		case 'yaml':
+			return new Worker(new URL('monaco-yaml/lib/esm/yaml.worker', import.meta.url))
+		default:
+			throw new Error(`Unknown label ${label}`)
 		}
-		return '/static/js/editor.worker.chunk.js'
 	},
 }
 

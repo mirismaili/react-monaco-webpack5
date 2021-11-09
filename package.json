@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
+    "start": "cross-env GENERATE_SOURCEMAP=false NODE_ENV=development BABEL_ENV=development webpack serve --mode=development",
+    "build-dev": "rimraf build && cross-env GENERATE_SOURCEMAP=false NODE_ENV=development BABEL_ENV=development webpack --mode=development",
+    "build": "rimraf build && cross-env GENERATE_SOURCEMAP=false NODE_ENV=production BABEL_ENV=production webpack --mode=production",
     "test": "node scripts/test.js"
   },
   "dependencies": {
     "@babel/core": "^7.14.2",
-    "@monaco-editor/react": "4.3.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
     "@svgr/webpack": "^5.5.0",
     "@testing-library/jest-dom": "^5.11.4",
@@ -39,7 +39,6 @@
     "jest-watch-typeahead": "^0.6.4",
     "mini-css-extract-plugin": "^2.1.0",
     "monaco-editor": "0.29.1",
-    "monaco-editor-webpack-plugin": "5.0.0",
     "monaco-yaml": "3.2.1",
     "postcss": "^8.3.5",
     "postcss-flexbugs-fixes": "^5.0.2",
@@ -51,6 +50,7 @@
     "react-app-polyfill": "3.0.0-next.91+1465357b",
     "react-dev-utils": "12.0.0-next.47+1465357b",
     "react-dom": "^17.0.2",
+    "react-monaco-editor": "0.46.0",
     "react-refresh": "^0.10.0",
     "resolve": "^1.20.0",
     "resolve-url-loader": "^4.0.0",
@@ -66,9 +66,11 @@
     "workbox-webpack-plugin": "^6.2.4"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "dynamic-cdn-webpack-plugin": "^5.0.0",
     "module-to-cdn": "^3.1.5",
-    "react-app-rewired": "^2.1.8"
+    "rimraf": "^3.0.2",
+    "webpack-cli": "^4.9.1"
   },
   "eslintConfig": {
     "extends": [
