@@ -1,8 +1,6 @@
-import 'monaco-editor'
-import {editor, Uri} from 'monaco-editor/esm/vs/editor/editor.api'
+import {editor as monacoEditor, Uri} from 'monaco-editor'
 import {setDiagnosticsOptions} from 'monaco-yaml'
-import 'monaco-yaml/lib/esm/yaml.worker'
-import React, {useLayoutEffect} from 'react'
+import React, {useLayoutEffect, useRef} from 'react'
 
 window.MonacoEnvironment = {
 	getWorker(moduleId, label) {
@@ -72,6 +70,8 @@ setDiagnosticsOptions({
 })
 
 export default function App () {
+	const editorContainer = useRef(null)
+	
 	useLayoutEffect(() => {
 		const value = `
 # Property descriptions are displayed when hovering over properties using your cursor
@@ -130,19 +130,19 @@ formatting:       Formatting is supported too! Under the hood this is powered by
 
 `.replace(/:$/m, ': ')
 		
-		editor.create(document.getElementById('editor'), {
+		window.editor = monacoEditor.create(editorContainer.current, {
 			automaticLayout: true,
-			model: editor.createModel(value, 'yaml', Uri.parse('monaco-yaml.yaml')),
+			model: monacoEditor.createModel(value, 'yaml', Uri.parse('monaco-yaml.yaml')),
 			theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'vs-dark' : 'vs-light',
 		})
 	}, [])
 	
-	const options = {
-		autoIndent: 'brackets',
-		formatOnPaste: true,
-		formatOnType: true,
-	}
+	// const options = {
+	// 	autoIndent: 'brackets',
+	// 	formatOnPaste: true,
+	// 	formatOnType: true,
+	// }
 	return (
-			<div id="editor" style={{height: '50vh', border: '1px solid black'}} />
+		<div ref={editorContainer} style={{height: '50vh', border: '1px solid black'}} />
 	)
 }
